@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+</head>
+<body>
+
+<h3>{{ table_name }}列表</h3>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-info">
+            <div class="panel-heading"><a href="{{ add_url }}" class="btn btn-primary">添加{{ table_name }}</a></div>
+
+        <div class="panel-body">
+
+        {#       让用户自定义搜索框，有定义就显示，没有就不显示#}
+            {% if show_list.config_obj.search_fields %}
+                <form class="form-inline pull-right">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="q" value="{{ show_list.search_default_val }}">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info">Search</button>
+                </form>
+            {% endif %}
+
+        {#   显示action，批量操作，默认自带批量删除操作#}
+          <form action="" method="post">
+            {% csrf_token %}
+              <select name="patch_func" id="" class="form-control" style="display:inline-block;width: 145px;">
+                {% for action_dict in show_list.show_actions %}
+                    <option value="{{ action_dict.name }}">{{ action_dict.desc }}</option>
+                {% endfor %}
+              </select>
+              <input type="submit" value="Go" class="btn btn-default" style="vertical-align: 1px">
+              <hr>
+            {#  显示多级过滤标签 用户有自定义才显示，#}
+            {% if show_list.config_obj.list_filter %}
+                <div class="panel panel-default filter_body">
+                    {% for field,links in show_list.show_list_filter.items %}
+                        <div class="filter_body_item">
+                            <span class="btn btn-default btn-sm disabled">{{ field }}</span>
+                        {% for link in links %}
+                            {{ link|safe }}
+                        {% endfor %}
+
+                        </div>
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+
+
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        {% for item in show_list.show_header %}
+                        <th>{{ item }}</th>
+                        {% endfor %}
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for item in show_list.show_body %}
+                    <tr>
+                        {% for val in item %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+
+                    </tr>
+                {% endfor %}
+
+
+
+                </tbody>
+            </table>
+        </form>
+
+            <div class="page_region pull-right">
+            {{ show_list.pagination.page_html|safe }}
+             </div>
+
+           </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">#}
+{#</head>#}
+{#<body>#}
+{##}
+{#<h3>数据列表</h3>#}
+{##}
+{##}
+{#<div class="container-fluid">#}
+{#    <div class="row">#}
+{#        <div class="col-md-8 col-md-offset-2">#}
+{#            <div class="panel panel-info">#}
+{#                <div class="panel-heading">#}
+{#                    <a href="{{ add_url }}" class="btn btn-primary">添加{{ table_name }}</a>#}
+{#                </div>#}
+{#                <div class="panel-body">#}
+{#                    {% if show_list.config_obj.search_fields %}#}
+{#                        <form class="form-inline pull-right">#}
+{#                            <div class="form-group">#}
+{#                                <div class="input-group">#}
+{#                                    <input type="text" class="form-control" name="q" value="{{ show_list.search_default_val }}">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <button type="submit" class="btn btn-info">Search</button>#}
+{#                        </form>#}
+{#                    {% endif %}#}
+{##}
+{##}
+{#                    <table class="table table-hover table-striped">#}
+{#                        <thead>#}
+{#                        <tr>#}
+{#                            {% for item in show_list.show_header %}#}
+{#                                <th>{{ item }}</th>#}
+{#                            {% endfor %}#}
+{##}
+{#                        </tr>#}
+{#                        </thead>#}
+{#                        <tbody>#}
+{##}
+{#                        {% for item in show_list.show_body %}#}
+{#                            <tr>#}
+{#                                {% for val in item %}#}
+{#                                    <td>{{ val }}</td>#}
+{#                                {% endfor %}#}
+{##}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{##}
+{##}
+{#                        </tbody>#}
+{#                    </table>#}
+{#                    <div class="page_region pull-right">#}
+{#                        {{ show_list.pagination.page_html|safe }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#    </div>#}
+{#</div>#}
+{##}
+{##}
+{#</body>#}
+{#</html>#}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
